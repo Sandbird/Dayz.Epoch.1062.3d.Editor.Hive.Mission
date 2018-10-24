@@ -7,7 +7,7 @@ It emulates the dayz_server and dayz_mission files, so you can write scripts usi
 
 ## Features:
   - Database integration (yes thats right... [:)]
-  - I would suggest to have a maximum of 200 objects in your object_data table for faster results. Took 5min to load 10000 obsj from my real database, so also make sure you dont go crazy with the ***MaxVehicleLimit***, ***MaxDynamicDebris*** values in the init.sqf
+  - I would suggest to have a maximum of 100 objects in your object_data table for faster results. Took 5min to load 10000 objs from my real database, so also make sure you dont go crazy with the ***MaxVehicleLimit***, ***MaxDynamicDebris*** values in the init.sqf
 - Fully working GUI, zombies, hit registration, addactions, everything!
 - Write code and execute it on the fly. No need to start a server and join with a client to test things.
 - 100% of your scripts will work! (dynamic weather, default loadouts, custom scripts etc)
@@ -38,7 +38,7 @@ If you dont have a mysql server on your pc...i suggest you get [WampServer](http
   - ***EATbaseExporter*** is used by the AdminTools, and allows you to export bases to an .sqf format so you can import them afterwards to your server.
 - Now edit ***-=START HIVE MISSION=-.bat*** which was placed in your Arma2 folder, and fix the paths to their proper values. If you are using DZLauncher then the @Dayz_Epoch folder is probably where i placed it myself. 
     - Battleye needs to be disabled inside the editor otherwise the extDB3 addon will not work. The .bat is taking care of that. It will disable Battleye after 7 seconds. Depending on your machine, if you see that the time isnt sufficient, raise that value a little bit. 
-- A sample Database has been provided with me as a character and a basic loadout. You can of course use your own database, just remember to delete most of your Object_Data table vehicles. The more vehicles you have there, the longer it will take for the dayz_server to spawn them. If you just want to write a script independed of cars etc...why wait 5 minutes for the server to spawn 10000 vehicles :)
+- A sample Database has been provided with me as a character and a basic loadout. You can of course use your own database, just remember to delete most of your Object_Data table vehicles. The more vehicles you have there, the longer it will take for the dayz_server to spawn them. If you just want to write a script independent of cars etc...why wait 5 minutes for the server to spawn 10000 vehicles :)
 - Open ***"ArmaOA\@extDB\extdb3-conf.ini"*** and add your test database data there. I named the test SQL DB ***dayz_cherno***
 Example:
 ```sh
@@ -74,7 +74,7 @@ Everything is database based..so no need to do anything else. The mission will s
 
 ### Premade Character Setup
 - ***[DefaultTruePreMadeFalse = false;]***
-This setup DOES NOT initialize the character based on a database entry, or does any HIVE related queries on mission start. (like load objects etc). Instead it uses some premade stats that you set, and only uses the Database on updates (buy vehilces etc)
+This setup DOES NOT initialize the character based on a database entry, or does any HIVE related queries on mission start. (like load objects etc). Instead it uses some premade stats that you set, and only uses the Database on updates (buy vehicles etc)
 The loadout of the player is set in the init.sqf in line ***77***
 ```sh
 player setVariable ["CharacterID", "1", true];		// Set here the characterID of the player. It can be anything...just leave it 1 if you want.
@@ -90,12 +90,12 @@ player setVariable ["friendlies", ["222222","333333"], true]; //Both DZE_Friends
 DZE_Friends = ["222222","333333"];
 ```
 - Everything else should work fine with the database....like traders, salvaging, etc...
-Unfortunately since the 1062 ver had many differencies from the 1051 one, i could't really make this Profile option a standalone one, without any Database interaction. So in order for you to minimize any errors in the log file, i would suggest you load my sample db file provided, and also change those CharacterID and PlayerUID values in PLAYER_Data and CHARACTER_Data tables to the ones you set up here, just in case....
+Unfortunately since the 1062 ver had many differences from the 1051 one, i couldn't really make this Profile option a standalone one, without any Database interaction. So in order for you to minimize any errors in the log file, i would suggest you load my sample db file provided, and also change those CharacterID and PlayerUID values in PLAYER_Data and CHARACTER_Data tables to the ones you set up here, just in case....
 - The Premade character setup is for people that want to fast debug a script they are making and dont want to wait for the Hive to load all map objects and authenticate the player first.
 
 ## Further Details to change (in both Profile Cases)
 The ***description.ext***, ***mission.sqf***, ***mission.biedi*** files have your character's name in them. Just search for the word ***Sandbird*** in all of them and change it according to the PlayerName value you have in your ***Player_DATA*** table for your PlayerUID value.
-Example take from description.ext
+Example taken from description.ext
 ~~~~
 	class My_Player
 	{
@@ -112,17 +112,17 @@ Example take from description.ext
 ### Init.sqf values
 - ***StaticDayOrDynamic = true;***    // A static date is set at the bottom of \dayz_server\init\server_function.sqf.  Set this to false if you want real time/date inside the mission.
 - ***DZEdebug = false;***             // Set to true if you want a more detailed log file
-- ***Enable Keyboard actions (menu option)*** // (findDisplay 46) wont work inside the editor. That means that building stuff or placing objects is very hard to do since we cant 'capture' keystrokes. I kinda fixed this with a trick. In order to build something first you have to initiate the building action (holding the object in your hands) and then scroll with your mouse wheel and select Enable Keyboard actions. This will create a layer on your screen capturing your keystrokes thus allowing you to change orientations etc. Pressing ESC twice after and it will close the fake display and return to normal play mode. You will have to do this everytime you want to build something.
+- ***Enable Keyboard actions (menu option)*** // (findDisplay 46) wont work inside the editor. That means that building stuff or placing objects is very hard to do since we cant 'capture' keystrokes. I kinda fixed this with a trick. In order to build something first you have to initiate the building action (holding the object in your hands) and then scroll with your mouse wheel and select Enable Keyboard actions. This will create a layer on your screen capturing your keystrokes thus allowing you to change orientations etc. Pressing ESC twice after and it will close the fake display and return to normal play mode. You will have to do this every time you want to build something.
 
 ### Related to coding
 - Since the Editor has some limitations because its not a real server some things will never work. For example:
 ***_playerUID = getPlayerUID player;*** will never work in the editor. 
 To get the _playerUID you have to do this: ***_playerUID = player getVariable ["PlayerUID",0];***
-This is the most important thing to remember. Lots of scripts use ***getPlayerUID***. You have to remember to change it every time you want to use it. Of courcs the ***player*** value is just an example here. If you were inside a loop and it had (getPlayerUID _x) then you have to rewrite it like this: (_x getVariable["PlayerUID",0])
+This is the most important thing to remember. Lots of scripts use ***getPlayerUID***. You have to remember to change it every time you want to use it. Of course the ***player*** value is just an example here. If you were inside a loop and it had (getPlayerUID _x) then you have to rewrite it like this: (_x getVariable["PlayerUID",0])
 
 - ***findDisplay 46*** does not work in the editor. If you are using/making a script that uses Display 46 try using my ***Enable Keyboard*** action. It might work in your case.
 
-- ***publicvariableServer*** commands dont exist in the editor. There is no server to accept the command. If you want to use addpublicvariableeventhandler you can do it with call/spawn commands. You can find the handlers usually int he PublicEH.sqf.
+- ***publicvariableServer*** commands dont exist in the editor. There is no server to accept the command. If you want to use addpublicvariableeventhandler you can do it with call/spawn commands. You can find the handlers usually in the PublicEH.sqf.
 Example:
 ~~~~ 
 PVDZE_plr_Save = [player,dayz_Magazines,false,true];
@@ -145,9 +145,9 @@ player_checkStealth = compile preprocessFileLineNumbers "\z\addons\dayz_code\com
 ~~~~
 - The first line will look up for player_switchModel.sqf inside the mission files, while the 2nd one will go to the @Dayz_Epoch map file and get the .sqf file. Same thing applies for the dayz_server files (server_functions.sqf). Once you are done with your script and you have added new compile lines, you need to fix them back to their proper values before you upload them to your live server.
 
-- If you are missing any BIS_fnc functions then check the folder ***dayz_code\system\functions*** and see if its available there to include it in the compiles.sqf.
+- If you are missing any BIS_fnc functions then check the folder ***dayz_code\system\functions*** and see if it's available there to include it in the compiles.sqf.
 
-- Set ***DZEdebug = true;***  in the init.sqf. And ALWAYS check your RPT log file for debugging. Its located at : %AppData%\Local\ArmA 2 OA
+- Set ***DZEdebug = true;***  in the init.sqf. And ALWAYS check your RPT log file for debugging. Its located in : %AppData%\Local\ArmA 2 OA folder
 
 
 ### Related to mission file included
@@ -155,7 +155,7 @@ player_checkStealth = compile preprocessFileLineNumbers "\z\addons\dayz_code\com
 - I've included a simple Fireworks script i made a while back only this time i used some better effects taken from [aliascartoons](http://www.armaholic.com/page.php?id=30846&highlight=FIREWORKS) work. Just add a 'SMAW_HEDP' into your inventory and right click on it to test it out. Here is how the old script used to look like [Fireworks](https://youtu.be/jEo_BCMxpcw).
 - Also you'll find a little 'hat script' in the files, just right click a 'IRStrobe' item to add a hat to your player.
 - Both script were written inside the editor using the mission file above...just a small example to show you how easy it is to write code there.
-- The @extDB folder contains a folder called ***debug_files***. These .dlls (when replaced the ones provided) activate a more detailed log file (found under ***arma 2 operation arrowhead\logs*** folder). It will show ALL MySQL queries going in/out of the database. Very useful you you are running any custom SQL queries and the RTP log file isnt enough.
+- The @extDB folder contains a folder called ***debug_files***. These .dlls (when replaced the ones provided) activate a more detailed log file (found under ***arma 2 operation arrowhead\logs*** folder). It will show ALL MySQL queries going in/out of the database. Very useful if you are running any custom SQL queries and the RTP log file isnt enough.
 
 
 ## Final Notes
