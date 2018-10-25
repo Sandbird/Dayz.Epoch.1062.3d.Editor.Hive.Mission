@@ -1,5 +1,8 @@
 disableSerialization;
 
+playableUnits = [];
+playableUnits set [count playableUnits, player];
+
 MarkerPosition = getMarkerPos MarkerP;
 MarkerPSize = getMarkerSize MarkerP;
 //My additions so spawn_vehicles.sqf works

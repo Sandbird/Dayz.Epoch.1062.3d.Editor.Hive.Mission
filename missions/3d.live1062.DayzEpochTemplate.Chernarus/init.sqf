@@ -188,6 +188,8 @@ if (isServer) then {
 	
 	//[false,12] execVM "\z\addons\dayz_code\compile\local_lights_init.sqf";
 	if (DZE_R3F_WEIGHT) then {execVM "dayz_code\external\R3F_Realism\R3F_Realism_Init.sqf";};
+
+	waitUntil {scriptDone progress_monitor};
 };
 
 

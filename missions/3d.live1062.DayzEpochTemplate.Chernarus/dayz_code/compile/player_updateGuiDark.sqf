@@ -157,10 +157,10 @@ if (!isNull _humanityTarget && {isPlayer _humanityTarget} && {alive _humanityTar
 		// Display name if player opt-in or if friend
 		_friendlies = player getVariable ["friendlies", []];
 		if (DZE_permanentPlot) then {
-			_id = dayz_playerUID;
+			_id = player getVariable ["playerUID", 0];
 			_rID = _humanityTarget getVariable ["playerUID", 0]; //getPlayerUID _humanityTarget;
 		} else {
-			_id = dayz_characterID;
+			_id = player getVariable ["playerUID", 0];
 			_rID = _humanityTarget getVariable ["CharacterID","0"];
 		};
 

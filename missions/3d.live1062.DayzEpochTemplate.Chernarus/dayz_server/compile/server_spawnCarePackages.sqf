@@ -8,9 +8,9 @@ Author:
 	Foxy
 */
 
-#include "dayz_code\util\Math.hpp"
-#include "dayz_code\util\Vector.hpp"
-#include "dayz_code\loot\Loot.hpp"
+#include "\z\addons\dayz_code\util\Math.hpp"
+#include "\z\addons\dayz_code\util\Vector.hpp"
+#include "\z\addons\dayz_code\loot\Loot.hpp"
 
 //Number of care packages to spawn
 #define SPAWN_NUM 6

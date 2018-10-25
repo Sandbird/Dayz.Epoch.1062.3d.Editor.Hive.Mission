@@ -12,9 +12,9 @@ _smQTY = {_x == "SMAW_HEDP"} count magazines player;
 if (_smQTY >= 1) then {
 	
 	dayz_actionInProgress = true;
-	//_finished = ["Medic",1] call fn_loopAction;
-	//if (!_finished) exitWith {dayz_actionInProgress = false; "Canceled Deploying Fireworks!" call dayz_rollingMessages;};
-	
+	_finished = ["Medic",1] call fn_loopAction;
+	if (!_finished) exitWith {dayz_actionInProgress = false; "Canceled Deploying Fireworks!" call dayz_rollingMessages;};
+	player removeMagazine "SMAW_HEDP";
 	_object  = createVehicle ["SkeetMachine",getpos player,[], 0, ""];
 	_object setpos  (player modelToWorld [0,2,0]);
 	_object setDir ([_object, player] call my_BIS_fnc_dirTo)-180;

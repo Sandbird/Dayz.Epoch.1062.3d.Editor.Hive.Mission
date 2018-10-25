@@ -395,11 +395,6 @@ if (_hiveLoaded) then {
 };
 
 
-// Don't spawn objects if no clients are online (createVehicle fails with Ref to nonnetwork object)
-if ((playersNumber west + playersNumber civilian) == 0) exitWith {
-	diag_log "All clients disconnected. Server_monitor.sqf is exiting.";
-};
-
 diag_log format["HIVE: BENCHMARK - Server_monitor.sqf finished streaming %1 objects in %2 seconds (unscheduled)",_totsVehicles,diag_tickTime - _timeStart];
 
 // # END OF STREAMING #
@@ -412,32 +407,34 @@ if (dayz_townGenerator) then {
 	object_debug = true;
 #endif
 //[] execFSM "dayz_server\system\server_vehicleSync.fsm";
-if(!isnil "bis_fnc_init") then {
-	diag_log ("CLEANUP: INITIALIZING Vehicle SCRIPT");
-	_lastVehicleUpdate = diag_tickTime;
-	_lastfenceUpdate = diag_tickTime;
-	while {1 == 1} do {
-		if (( (count needUpdate_objects) > 0) && (diag_tickTime -_lastVehicleUpdate> 5) && (!isNil "sm_done")) then {
-			if (object_debug) then {
-				diag_log format["INFO: needUpdate_objects=%1",needUpdate_objects];
+[] spawn {
+		if(!isnil "bis_fnc_init") then {
+			diag_log ("CLEANUP: INITIALIZING Vehicle SCRIPT");
+			_lastVehicleUpdate = diag_tickTime;
+			_lastfenceUpdate = diag_tickTime;
+			while {1 == 1} do {
+				if (( (count needUpdate_objects) > 0) && (diag_tickTime -_lastVehicleUpdate> 5) && (!isNil "sm_done")) then {
+					if (object_debug) then {
+						diag_log format["INFO: needUpdate_objects=%1",needUpdate_objects];
+					};
+
+					{
+						needUpdate_objects = needUpdate_objects - [_x];
+						[_x,"damage",true] call server_updateObject;
+					} forEach needUpdate_objects;
+				};
+				
+				if((( (count needUpdate_FenceObjects) > 0) && (diag_tickTime -_lastfenceUpdate> 5) && (!isNil "sm_done"))) then {
+					diag_log format["INFO: needUpdate_FenceObjects=%1",needUpdate_FenceObjects];
+
+					{
+						needUpdate_FenceObjects = needUpdate_FenceObjects - [_x];
+						[_x,"objWallDamage"] call server_updateObject;
+					} forEach needUpdate_FenceObjects;
+				};
+				uiSleep 0.01;
 			};
-
-			{
-				needUpdate_objects = needUpdate_objects - [_x];
-				[_x,"damage",true] call server_updateObject;
-			} forEach needUpdate_objects;
 		};
-		
-		if((( (count needUpdate_FenceObjects) > 0) && (diag_tickTime -_lastfenceUpdate> 5) && (!isNil "sm_done"))) then {
-			diag_log format["INFO: needUpdate_FenceObjects=%1",needUpdate_FenceObjects];
-
-			{
-				needUpdate_FenceObjects = needUpdate_FenceObjects - [_x];
-				[_x,"objWallDamage"] call server_updateObject;
-			} forEach needUpdate_FenceObjects;
-		};
-		uiSleep 0.01;
-	};
 };
 [] execVM "dayz_server\system\scheduler\sched_init.sqf"; // launch the new task scheduler
 
@@ -453,11 +450,6 @@ for "_i" from 0 to 10 do {
 	};
 };
 diag_log format["Total Number of spawn locations %1", actualSpawnMarkerCount];
-
-//if (isDedicated) then {endLoadingScreen;};
-allowConnection = true;
-sm_done = true;
-publicVariable "sm_done";
 
 // Trap loop
 [] spawn {
@@ -621,3 +613,15 @@ _vehicle_0 = createVehicle ["DebugBox_DZ", _debugMarkerPosition, [], 0, "CAN_COL
 _vehicle_0 setPos _debugMarkerPosition;
 _vehicle_0 setVariable ["ObjectID","1",true];
 */
+
+
+// Don't spawn objects if no clients are online (createVehicle fails with Ref to nonnetwork object)
+if ((playersNumber west + playersNumber civilian) == 0) exitWith {
+	diag_log format["All clients disconnected. Server_monitor.sqf is exiting."];
+};
+
+//if (isDedicated) then {endLoadingScreen;};
+
+allowConnection = true;
+sm_done = true;
+publicVariable "sm_done";
