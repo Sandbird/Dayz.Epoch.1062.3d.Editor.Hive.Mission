@@ -404,13 +404,13 @@ if(!_cancel) then {
 			_tmpbuilt spawn player_fireMonitor;
 		} else {
 			if (DZE_permanentPlot) then {
-				_tmpbuilt setVariable ["ownerPUID",dayz_playerUID,true];
+				_tmpbuilt setVariable ["ownerPUID",(player getVariable["PlayerUID",0]),true];
 				if (_isPole) then {
-					_friendsArr = [[dayz_playerUID,toArray (name player)]];
+					_friendsArr = [[player getVariable["PlayerUID",0],toArray (name player)]];
 					_tmpbuilt setVariable ["plotfriends", _friendsArr, true];
-					PVDZ_obj_Publish = [dayz_characterID,_tmpbuilt,[_dir,_location,dayz_playerUID,_vector],_friendsArr,player,dayz_authKey];
+					PVDZ_obj_Publish = [dayz_characterID,_tmpbuilt,[_dir,_location,(player getVariable["PlayerUID",0]),_vector],_friendsArr,player,dayz_authKey];
 				} else {
-					PVDZ_obj_Publish = [dayz_characterID,_tmpbuilt,[_dir,_location,dayz_playerUID,_vector],[],player,dayz_authKey];
+					PVDZ_obj_Publish = [dayz_characterID,_tmpbuilt,[_dir,_location,(player getVariable["PlayerUID",0]),_vector],[],player,dayz_authKey];
 				};
 			} else {
 				PVDZ_obj_Publish = [dayz_characterID,_tmpbuilt,[_dir,_location, _vector],[]];
