@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.0.2] - 2018-10-27
+
+### Changed
+- Fixed player_switchModel.sqf, server_functions.sqf, player_monitor.sqf to properly retrieve and update player stats in the db.
+
 ## [1.0.1] - 2018-10-26
 
 ### Changed

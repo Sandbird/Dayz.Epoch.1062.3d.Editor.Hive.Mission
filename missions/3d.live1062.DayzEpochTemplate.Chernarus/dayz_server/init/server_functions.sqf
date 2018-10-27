@@ -293,7 +293,7 @@ server_getStatsDiff = {
 	diag_log format["Server_getStatsDiff - Object:%1 Diffs:%2 New:%3",_player,_result,_statsArray];
 	#endif
 	
-	_result
+	_statsArray
 };
 
 //seems max is 19 digits

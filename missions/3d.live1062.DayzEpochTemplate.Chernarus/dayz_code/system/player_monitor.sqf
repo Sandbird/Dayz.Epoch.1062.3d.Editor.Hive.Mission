@@ -166,8 +166,8 @@ if (_debug) then {diag_log [diag_tickTime,'Loading'];};
 	};
 ///////////////////////////////////////////////////////////
 	dayz_playerName = name player;
-	//_model call player_switchModel;
-
+	gear_done = true;
+	_model call player_switchModel;
 	player allowDamage false;
 	_lastAte = _survival select 1;
 	_lastDrank = _survival select 2;

@@ -2,8 +2,8 @@ private ["_weapons","_isArray","_backpackWpn","_backpackMag","_currentWpn","_isW
 _isArray = typeName _this == "ARRAY";
 _class = if (_isArray) then {_this select 0} else {_this};
 
-//if (gear_done) then {disableUserInput true;disableUserInput true;};
-//disableSerialization;
+if (gear_done) then {disableUserInput true;disableUserInput true;};
+disableSerialization;
 
 //Old location system causes issues with players getting damaged during movement.
 //_position = getPosATL player;
@@ -20,12 +20,12 @@ _weapons = weapons player;
 _countMags = call player_countMagazinesWBackpack; //magazines player;
 if (typeName _countMags != "ARRAY") exitWith {localize "str_actions_switchmodel_fail" call dayz_rollingMessages;};
 _magazines = _countMags select 0;
-if ((_playerUID == dayz_playerUID) && (count _magazines == 0) && (count (magazines player) > 0)) exitWith {
+if ((_playerUID == (player getVariable["PlayerUID",0])) && (count _magazines == 0) && (count (magazines player) > 0)) exitWith {
 	localize "str_actions_switchmodel_fail" call dayz_rollingMessages;
-	//if (gear_done) then {
-	//	(findDisplay 106) closeDisplay 0; closeDialog 0;
-	//	disableUserInput false;disableUserInput false;disableUserInput false;disableUserInput false;
-	//};
+	if (gear_done) then {
+		(findDisplay 106) closeDisplay 0; closeDialog 0;
+		disableUserInput false;disableUserInput false;disableUserInput false;disableUserInput false;
+	};
 };
 
 _primweapon = primaryWeapon player;
@@ -72,10 +72,15 @@ _leader = (player == leader _oldGroup);
 
 //Create New Character
 //[player] joinSilent grpNull;
-_group = createGroup west;
-_newUnit = _group createUnit [_class,respawn_west_original,[],0,"NONE"];
-_newUnit 	setPosATL _position;
-_newUnit 	setDir _dir;
+
+//_group = createGroup west;
+//_newUnit = _group createUnit [_class,respawn_west_original,[],0,"NONE"];
+//_newUnit 	setPosATL _position;
+//_newUnit 	setDir _dir;
+
+_newUnit = _oldUnit;
+_group = _oldGroup;
+
 
 if (_isArray) then {
 	_newUnit allowDamage false;
@@ -133,7 +138,7 @@ _switchUnit = {
 		if (_leader) then {
 			//Request new leader promote player back to leader (group is local to leader)
 			PVDZ_Server_UpdateGroup = [-1,player];
-			publicVariableServer "PVDZ_Server_UpdateGroup";
+			//publicVariableServer "PVDZ_Server_UpdateGroup";
 			PVDZ_Server_UpdateGroup spawn server_updateGroup;
 		};
 	};
