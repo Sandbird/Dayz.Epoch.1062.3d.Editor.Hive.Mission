@@ -133,6 +133,131 @@ class _unit_7
 		LEADER="true";
 	};
 };
+	class _trigger_0
+	{
+		objectType="trigger";
+		class Arguments
+		{
+			POSITION="[6325,7807,304]";
+			ACTIVATION_BY="WEST";
+			REPEATING="1";
+			INTERRUPTABLE="1";
+			TEXT="";
+			NAME="zonestary";
+			EXP_COND="(player distance zonestary) < 100;";
+			EXP_ACTIV="[""trader city Stary"",true,""enter""] call player_traderCity;";
+			EXP_DESACTIV="[""trader city Stary"",true,""leave""] call player_traderCity;";
+			AGE="UNKNOWN";
+			SOUND_DET_EFFECT="";
+			A="100";
+			B="100";
+		};
+	};
+
+	class _trigger_1
+	{
+		objectType="trigger";
+		class Arguments
+		{
+			POSITION="[4063,11664,365]";
+			ACTIVATION_BY="WEST";
+			REPEATING="1";
+			INTERRUPTABLE="1";
+			TEXT="";
+			NAME="zonebash";
+			EXP_COND="(player distance zonebash) < 100;";
+			EXP_ACTIV="[""trader city Bash"",true,""enter""] call player_traderCity;";
+			EXP_DESACTIV="[""trader city Bash"",true,""leave""] call player_traderCity;";
+			AGE="UNKNOWN";
+			SOUND_DET_EFFECT="";
+			A="100";
+			B="100";
+		};
+	};
+
+	class _trigger_2
+	{
+		objectType="trigger";
+		class Arguments
+		{
+			POSITION="[11447,11364,317]";
+			ACTIVATION_BY="WEST";
+			REPEATING="1";
+			INTERRUPTABLE="1";
+			TEXT="";
+			NAME="zoneklen";
+			EXP_COND="(player distance zoneklen) < 100;";
+			EXP_ACTIV="[""trader city Klen"",true,""enter""] call player_traderCity;";
+			EXP_DESACTIV="[""trader city Klen"",true,""leave""] call player_traderCity;";
+			AGE="UNKNOWN";
+			SOUND_DET_EFFECT="";
+			A="100";
+			B="100";
+		};
+	};
+
+	class _trigger_3
+	{
+		objectType="trigger";
+		class Arguments
+		{
+			POSITION="[1606,7803,289]";
+			ACTIVATION_BY="WEST";
+			REPEATING="1";
+			INTERRUPTABLE="1";
+			TEXT="";
+			NAME="zonebandit";
+			EXP_COND="(player distance zonebandit) < 100;";
+			EXP_ACTIV="[""Bandit Trader"",false,""enter""] call player_traderCity;";
+			EXP_DESACTIV="[""Bandit Trader"",false,""leave""] call player_traderCity;";
+			AGE="UNKNOWN";
+			SOUND_DET_EFFECT="";
+			A="100";
+			B="100";
+		};
+	};
+
+	class _trigger_4
+	{
+		objectType="trigger";
+		class Arguments
+		{
+			POSITION="[12944,12766,210]";
+			ACTIVATION_BY="WEST";
+			REPEATING="1";
+			INTERRUPTABLE="1";
+			TEXT="";
+			NAME="zonehero";
+			EXP_COND="(player distance zonehero) < 100;";
+			EXP_ACTIV="[""Hero Trader"",false,""enter""] call player_traderCity;";
+			EXP_DESACTIV="[""Hero Trader"",false,""leave""] call player_traderCity;";
+			AGE="UNKNOWN";
+			SOUND_DET_EFFECT="";
+			A="100";
+			B="100";
+		};
+	};
+
+	class _trigger_5
+	{
+		objectType="trigger";
+		class Arguments
+		{
+			POSITION="[12060,12638,158]";
+			ACTIVATION_BY="WEST";
+			REPEATING="1";
+			INTERRUPTABLE="1";
+			TEXT="";
+			NAME="zoneaircraft";
+			EXP_COND="(player distance zoneaircraft) < 100;";
+			EXP_ACTIV="[""Aircraft Trader"",false,""enter""] call player_traderCity;";
+			EXP_DESACTIV="[""Aircraft Trader"",false,""leave""] call player_traderCity;";
+			AGE="UNKNOWN";
+			SOUND_DET_EFFECT="";
+			A="100";
+			B="100";
+		};
+	};
 class _postfix_0
 {
 	objectType="postfix";
