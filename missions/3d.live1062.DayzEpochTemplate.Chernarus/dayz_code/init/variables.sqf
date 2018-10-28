@@ -10,6 +10,8 @@ if(isnil "dayz_MapArea") then {
 	dayz_MapArea = 10000;
 };
 
+dayz_playerUID = player getVariable["PlayerUID",0];
+
 //Model Variables
 Bandit1_DZ = "Bandit1_DZ";
 BanditW1_DZ = "BanditW1_DZ";

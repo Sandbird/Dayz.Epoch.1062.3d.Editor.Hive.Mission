@@ -77,6 +77,6 @@ if (EAT_DebugMonitor && !isDedicated) then {[] execVM "dayz_code\admintools\debu
 	Ins_KEY = (findDisplay 46) displayAddEventHandler ["KeyDown","if ((_this select 1) == 210) then {[] execVM ""dayz_code\admintools\debug_monitor\debug_monitor.sqf"";true};"];
 };
 // Start safezone scripts if enabled
-if(EAT_safeZones && !isServer) then {[] spawn {[] ExecVM "dayz_code\admintools\safeZones\safeZones.sqf";};};
+if(EAT_safeZones && isServer) then {[] spawn {[] ExecVM "dayz_code\admintools\safeZones\safeZones.sqf";};};
 
 diag_log("Admin Tools: Activate.sqf loaded");
