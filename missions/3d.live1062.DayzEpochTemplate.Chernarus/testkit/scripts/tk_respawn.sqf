@@ -1,0 +1,1 @@
+[player,"suicide"] call player_death;

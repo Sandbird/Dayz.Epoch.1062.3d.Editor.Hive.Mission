@@ -211,4 +211,6 @@ if (DefaultTruePreMadeFalse) then {
 // This is used when you are building something. Temporarily it creates a display 46 to capture keystrokes. You need to activate it AFTER you start building something.
 player addAction [("<t color=""#39C1F3"">" + ("Enable Keyboard actions") + "</t>"),"custom\monitor_building.sqf", "", 1, false,true,"",""]; 
 
+//Add Testkit
+execVM "testkit\init.sqf"
 };
