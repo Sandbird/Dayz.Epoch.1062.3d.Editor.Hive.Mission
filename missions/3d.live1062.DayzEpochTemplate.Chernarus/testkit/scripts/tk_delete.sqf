@@ -10,7 +10,7 @@ if (isNull _target) then {
 
 	if (_objectID != "0" or _objectUID != "0") then {
 		PVDZ_obj_Destroy = [_objectID,_objectUID,player,_target,dayz_authKey];
-		publicVariableServer "PVDZ_obj_Destroy";
+		publicVariable "PVDZ_obj_Destroy";
 	};
 	
 	deleteVehicle _target;

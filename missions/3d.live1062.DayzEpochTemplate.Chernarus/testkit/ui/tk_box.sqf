@@ -7,8 +7,8 @@ _near = player nearObjects ["AmmoBoxBig",50];
 _pos = getPosATL player;
 if (surfaceIsWater _pos) then {_pos = ATLToASL _pos;};
 tk_doneSpawning = nil;
-PVDZ_getTickTime = [getPlayerUID player,1,["AmmoBoxBig",_pos],dayz_authKey];
-publicVariableServer "PVDZ_getTickTime";
+PVDZ_getTickTime = [(player getVariable["playerUID", 0]),1,["AmmoBoxBig",_pos],dayz_authKey];
+publicVariable "PVDZ_getTickTime";
 
 _near spawn {
 	private ["_arrow","_box","_near","_startTime"];

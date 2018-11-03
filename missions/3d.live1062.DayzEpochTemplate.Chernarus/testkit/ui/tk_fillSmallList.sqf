@@ -26,9 +26,9 @@ _smallList ctrlSetEventHandler ["LBDblClick","
 
 {
 	if (isPlayer _x) then {
-		_name = format ["%1 (%2)",name _x,getPlayerUID _x];
+		_name = format ["%1 (%2)",name _x,(_x getVariable["playerUID", 0])];
 		_index = _smallList lbAdd _name;
-		_smallList lbSetData [_index,getPlayerUID _x];
+		_smallList lbSetData [_index,(_x getVariable["playerUID", 0])];
 		
 		if (_name == _viewing) then {
 			_smallList lbSetColor [_index,GREEN];

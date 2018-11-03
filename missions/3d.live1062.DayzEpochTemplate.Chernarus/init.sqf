@@ -76,9 +76,9 @@ if(DefaultTruePreMadeFalse) then {
 	////////////////////////////
 	player setVariable ["CharacterID", "1", true];		// Set here the characterID of the player. It can be anything...just leave it 1 if you want.
 	player setVariable ["playerUID", "111111", true]; // Set here the playerUID of the player you want to have. (by default the 2nd bot inside the game is friend to player with id 111111 for testing reasons)
-	player setVariable["Z_globalVariable", 100000];
-	player setVariable["Z_BankVariable", 100000];
-	player setVariable["Z_MoneyVariable", 100000];
+	player setVariable[Z_globalVariable, 100000];
+	player setVariable[Z_BankVariable, 100000];
+	player setVariable[Z_MoneyVariable, 100000];
 	player setVariable["humanity", 11000];
 	player setVariable["humanKills", 10];
 	player setVariable["banditKills", 20];

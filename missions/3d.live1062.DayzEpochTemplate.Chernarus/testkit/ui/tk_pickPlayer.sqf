@@ -3,7 +3,7 @@ private ["_option","_player","_strH","_text","_vehicle"];
 _option = _this select 1;
 _player = _this select 2;
 _vehicle = vehicle _player;
-_text = format ["%1 (%2)",(_player call tk_getName),getPlayerUID _player];
+_text = format ["%1 (%2)",(_player call tk_getName),(_player getVariable["playerUID", 0])];
 
 switch _option do {
 	case "BIS debug cam": {
@@ -17,7 +17,7 @@ switch _option do {
 			systemChat "You must be within 5m of player to give epinephrine";
 		};
 		PVDZ_getTickTime = [getPlayerUID player,4,_player,dayz_authKey];
-		publicVariableServer "PVDZ_getTickTime";
+		publicVariable "PVDZ_getTickTime";
 	};
 	case "Refuel and repair": {
 		_vehicle setDamage 0;
@@ -26,7 +26,7 @@ switch _option do {
 			[_vehicle,1] call local_setFuel;
 		} else {
 			PVDZ_send = [_vehicle,"SetFuel",[_vehicle,1]];
-			publicVariableServer "PVDZ_send";
+			publicVariable "PVDZ_send";
 		};
 		{
 			if (([_vehicle,_x] call object_getHit) > 0) then {

@@ -221,7 +221,7 @@ if (Z_SingleCurrency) then {
 	//_key = format["UPDATE `Character_DATA` SET `LastLogin` = CURRENT_TIMESTAMP WHERE `CharacterID` = '%1'",_characterID];
 	//_key call server_hiveWrite;
 	//sleep 0.5;
-	_key = format["UPDATE `character_data` SET `Inventory` = '%1',`Backpack` = '%2',`Worldspace` = '%3',`Medical` = '%4',`CurrentState` = '%5',`HeadshotsZ` = '%6',`KillsZ` = '%7',`KillsH` = '%8',`KillsB` = '%9',`Humanity` = '%10', `DistanceFoot` = '%11', `Model` = '%12', `Duration` = '%13', `Coins` = '%14', `LastLogin` = CURRENT_TIMESTAMP WHERE `character_data`.`CharacterID` = '%14'",_playerGear, _playerBackp, _playerPos, _medical, _currentState,_headShots, _kills, _killsH,_killsB, _humanity, _distanceFoot, _currentModel, _timeSince, _characterID, _coins];
+	_key = format["UPDATE `character_data` SET `Inventory` = '%1',`Backpack` = '%2',`Worldspace` = '%3',`Medical` = '%4',`CurrentState` = '%5',`HeadshotsZ` = '%6',`KillsZ` = '%7',`KillsH` = '%8',`KillsB` = '%9',`Humanity` = '%10', `DistanceFoot` = '%11', `Model` = '%12', `Duration` = '%13', `Coins` = '%15', `LastLogin` = CURRENT_TIMESTAMP WHERE `character_data`.`CharacterID` = '%14'",_playerGear, _playerBackp, _playerPos, _medical, _currentState,_headShots, _kills, _killsH,_killsB, _humanity, _distanceFoot, _currentModel, _timeSince, _characterID, _coins];
 	//_key call server_hiveWrite;
 } else {
 	//str formatText["CHILD:201:%1:%2:%3:%4:%5:%6:%7:%8:%9:%10:%11:%12:%13:%14:%15:%16:",_characterID,_playerPos,_playerGear,_playerBackp,_medical,false,false,_kills,_headShots,_distanceFoot,_timeSince,_currentState,_killsH,_killsB,_currentModel,_humanity]
