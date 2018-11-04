@@ -1,7 +1,7 @@
 // [_object,_type] spawn server_updateObject;
 //#include "\z\addons\dayz_server\compile\server_toggle_debug.hpp"
 if (isNil "sm_done") exitWith {};
-private ["_class","_objectID","_objectUID","_object_position","_isNotOk","_object","_type","_recorddmg","_forced","_lastUpdate","_needUpdate","_object_inventory","_object_damage","_objWallDamage","_object_killed","_object_maintenance","_object_variables","_totalDmg"];
+private ["_class","_objectID","_objectUID","_object_position","_isNotOk","_object","_type","_recorddmg","_forced","_lastUpdate","_needUpdate","_object_inventory","_object_damage","_objWallDamage","_object_killed","_object_maintenance","_object_variables","_totalDmg","_coins"];
 
 _object = _this select 0;
 _type = _this select 1;
@@ -96,21 +96,30 @@ _object_inventory = {
 			_inventory = [getWeaponCargo _object, getMagazineCargo _object, getBackpackCargo _object];
 		};
 	};
-	
 	_previous = str(_object getVariable["lastInventory",[]]);
 	if (str _inventory != _previous) then {
 		_object setVariable["lastInventory",_inventory];
 		if (_objectID == "0") then {
 			//_key = format["CHILD:309:%1:",_objectUID] + str _inventory + ":";
-			_key = format["UPDATE OBJECT_data SET Inventory = '%2' WHERE ObjectUID = '%1'",_objectUID,_inventory];
+			if (Z_SingleCurrency) then {
+				_coins = _object getVariable [Z_MoneyVariable, -1];
+				_key = format["UPDATE OBJECT_data SET Inventory = '%2', StorageCoins = '%3' WHERE ObjectUID = '%1'",_objectUID,_inventory,_coins];
+			}else{
+				_key = format["UPDATE OBJECT_data SET Inventory = '%2' WHERE ObjectUID = '%1'",_objectUID,_inventory];
+			};
 		} else {
 			//_key = format["CHILD:303:%1:",_objectID] + str _inventory + ":";
-			_key = format["UPDATE OBJECT_data SET Inventory = '%2' WHERE ObjectID = '%1'",_objectID,_inventory];
+			if (Z_SingleCurrency) then {
+				_coins = _object getVariable [Z_MoneyVariable, -1];
+				_key = format["UPDATE OBJECT_data SET Inventory = '%2', StorageCoins = '%3' WHERE ObjectID = '%1'",_objectID,_inventory,_coins];
+			}else{
+				_key = format["UPDATE OBJECT_data SET Inventory = '%2' WHERE ObjectID = '%1'",_objectID,_inventory];
+			};
 		};
-		if (Z_SingleCurrency) then {
-			_coins = _object getVariable [Z_MoneyVariable, -1]; //set to invalid value if getVariable fails to prevent overwriting of coins in DB
-			_key = _key + str _coins + ":";
-		};
+		//if (Z_SingleCurrency) then {
+		//	_coins = _object getVariable [Z_MoneyVariable, -1]; //set to invalid value if getVariable fails to prevent overwriting of coins in DB
+		//	_key = _key + str _coins + ":";
+		//};
 		
 		#ifdef OBJECT_DEBUG
 			diag_log ("HIVE: WRITE: "+ str(_key));
@@ -282,16 +291,34 @@ _object_variables = {
 	_variables set [count _variables, ["BuildLock", _lockedArray]];
 
 	if (_objectID == "0") then {
-		//_key = format["CHILD:309:%1:%2:",_objectUID,_variables];
-		_key = format["UPDATE OBJECT_data SET Inventory = '%2' WHERE ObjectUID = '%1'",_objectUID,_variables];
+		//_key = format["CHILD:309:%1:",_objectUID] + str _inventory + ":";
+		if (Z_SingleCurrency) then {
+			_coins = _object getVariable [Z_MoneyVariable, -1];
+			if(_coins == -1) then {
+				_key = format["UPDATE OBJECT_data SET Inventory = '%2' WHERE ObjectUID = '%1'",_objectUID,_variables];
+			}else{
+				_key = format["UPDATE OBJECT_data SET Inventory = '%2', StorageCoins = '%3' WHERE ObjectUID = '%1'",_objectUID,_variables,_coins];
+			};
+		}else{
+			_key = format["UPDATE OBJECT_data SET Inventory = '%2' WHERE ObjectUID = '%1'",_objectUID,_variables];
+		};
 	} else {
-		//_key = format["CHILD:303:%1:%2:",_objectID,_variables];
-		_key = format["UPDATE OBJECT_data SET Inventory = '%2' WHERE ObjectID = '%1'",_objectID,_variables];
+		//_key = format["CHILD:303:%1:",_objectID] + str _inventory + ":";
+		if (Z_SingleCurrency) then {
+			_coins = _object getVariable [Z_MoneyVariable, -1];
+			if(_coins == -1) then {
+				_key = format["UPDATE OBJECT_data SET Inventory = '%2' WHERE ObjectID = '%1'",_objectID,_variables];
+			}else{
+				_key = format["UPDATE OBJECT_data SET Inventory = '%2', StorageCoins = '%3' WHERE ObjectID = '%1'",_objectID,_variables,_coins];
+			};
+		}else{
+			_key = format["UPDATE OBJECT_data SET Inventory = '%2' WHERE ObjectID = '%1'",_objectID,_variables];
+		};
 	};
-	if (Z_SingleCurrency) then {
-		_coins = _object getVariable [Z_MoneyVariable, -1];
-		_key = _key + str _coins + ":";
-	};
+	//if (Z_SingleCurrency) then {
+	//	_coins = _object getVariable [Z_MoneyVariable, -1];
+	//	_key = _key + str _coins + ":";
+	//};
 	_key call server_hiveWrite;
 };
 

@@ -1,4 +1,4 @@
-private ["_backpacks","_charID","_clientID","_dir","_holder","_lockCode","_lockColor","_lockedClass","_magazines","_name","_obj","_objectID","_objectUID","_ownerID","_packedClass","_player","_playerUID","_pos","_status","_statusText","_type","_unlockedClass","_vector","_weapons","_message","_suppliedCode","_fnc_lockCode"];
+private ["_backpacks","_charID","_clientID","_dir","_holder","_lockCode","_lockColor","_lockedClass","_magazines","_name","_obj","_objectID","_objectUID","_ownerID","_packedClass","_player","_playerUID","_pos","_status","_statusText","_type","_unlockedClass","_vector","_weapons","_message","_suppliedCode","_fnc_lockCode","_coins","_wealth"];
 
 _player = _this select 0;
 _obj = _this select 1;
@@ -51,6 +51,7 @@ switch (_status) do {
 		_weapons = _obj getVariable ["WeaponCargo",[]];
 		_magazines = _obj getVariable ["MagazineCargo",[]];
 		_backpacks = _obj getVariable ["BackpackCargo",[]];
+		if (Z_singleCurrency) then {_coins = _obj getVariable [Z_MoneyVariable,0];};
 		
 		// Create new unlocked safe, then delete old locked safe
 		//_holder = createVehicle [_unlockedClass,_pos,[],0,"CAN_COLLIDE"];
@@ -64,9 +65,15 @@ switch (_status) do {
 		_holder setVariable ["ObjectUID",_objectUID,true];
 		_holder setVariable ["OEMPos",_pos,true];
 		if (DZE_permanentPlot) then {_holder setVariable ["ownerPUID",_ownerID,true];};
+		if (Z_singleCurrency) then {_holder setVariable [Z_MoneyVariable,_coins,true];};
 		deleteVehicle _obj;
 		
 		[_weapons,_magazines,_backpacks,_holder] call fn_addCargo;
+		
+		if (_charID in ["0000","10000"]) then {
+			RemoteMessage = ["private",[_playerUID,format ["The combination on this %1 has been reset to %2",getText (configFile >> "CfgVehicles" >> _unlockedClass >> "displayName"),if (_unlockedClass == "VaultStorage") then {"0000"} else {"RED00"}]]];
+			publicVariable "RemoteMessage";
+		};		
 	};
 	case 1: { //Locking
 		_lockedClass = getText (configFile >> "CfgVehicles" >> _type >> "lockedClass");
@@ -76,6 +83,7 @@ switch (_status) do {
 		_weapons = getWeaponCargo _obj;
 		_magazines = getMagazineCargo _obj;
 		_backpacks = getBackpackCargo _obj;
+		if (Z_singleCurrency) then {_coins = _obj getVariable [Z_MoneyVariable,0];};
 		
 		// Create new locked safe, then delete old unlocked safe
 		//_holder = createVehicle [_lockedClass,_pos,[],0,"CAN_COLLIDE"];
@@ -89,6 +97,7 @@ switch (_status) do {
 		_holder setVariable ["ObjectUID",_objectUID,true];
 		_holder setVariable ["OEMPos",_pos,true];
 		if (DZE_permanentPlot) then {_holder setVariable ["ownerPUID",_ownerID,true];};		
+		if (Z_singleCurrency) then {_holder setVariable [Z_MoneyVariable,_coins,true];};
 		deleteVehicle _obj;
 		
 		// Local setVariable gear onto new locked safe for easy access on next unlock
@@ -103,6 +112,7 @@ switch (_status) do {
 		_weapons = getWeaponCargo _obj;
 		_magazines = getMagazineCargo _obj;
 		_backpacks = getBackpackCargo _obj;
+		if (Z_singleCurrency) then {_coins = _obj getVariable [Z_MoneyVariable,0];};
 		
 		//_holder = createVehicle [_packedClass,_pos,[],0,"CAN_COLLIDE"];
 		_holder = _packedClass createVehicle [0,0,0];
@@ -111,6 +121,13 @@ switch (_status) do {
 		_holder setPosATL _pos;
 		_holder addMagazineCargoGlobal [getText(configFile >> "CfgVehicles" >> _packedClass >> "seedItem"),1];
 		[_weapons,_magazines,_backpacks,_holder] call fn_addCargo;
+		if (Z_singleCurrency && {_coins > 0}) then {
+			_wealth = _player getVariable [Z_MoneyVariable,0];
+			_player setVariable [Z_MoneyVariable,_wealth + _coins,true];
+			
+			RemoteMessage = ["private",[_playerUID,format ["You packed %1 while it had %2 %3 in it, it has been transferred to your %3 total.",_type,[_coins] call BIS_fnc_numberText,CurrencyName]]];
+			publicVariable "RemoteMessage";
+		};
 		
 		// Delete safe from database
 		[_objectID,_objectUID] call server_deleteObjDirect;
